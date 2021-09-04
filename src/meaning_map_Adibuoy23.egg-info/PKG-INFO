@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: meaning-map-Adibuoy23
+Version: 0.0.1
+Summary: # meaning_map  A python package to generate and analyse meaning maps from images of natural scenes  This package provides the code for the following: * Creating scene patches -   
+Home-page: https://github.com/Adibuoy23/meaning_map
+Author: Aditya Upadhyayula, Taylor R Hayes, Gwen Rehrig
+Author-email: aditya.usa8@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/Adibuoy23/meaning_map/issues
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Beta
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+UNKNOWN
+

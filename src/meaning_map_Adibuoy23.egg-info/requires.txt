@@ -1,0 +1,8 @@
+cv2
+numpy
+scipy
+tkinter
+pandas
+tqdm
+matplotlib
+requests
