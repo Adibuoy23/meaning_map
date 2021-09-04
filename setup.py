@@ -20,7 +20,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=["cv2", "numpy", "scipy", "tk",
+    install_requires=["opencv-python", "numpy", "scipy", "tk",
                       "pandas", "tqdm", "matplotlib", "requests"],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
