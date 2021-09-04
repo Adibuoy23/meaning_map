@@ -21,7 +21,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=["opencv-python", "numpy", "scipy", "tk",
-                      "pandas", "tqdm", "matplotlib", "requests"],
+                      "pandas", "tqdm", "matplotlib", "requests", "natsort"],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     python_requires=">=3.6",
