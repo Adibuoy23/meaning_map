@@ -1,8 +1,10 @@
-cv2
+opencv-python
 numpy
 scipy
-tkinter
+tk
 pandas
 tqdm
 matplotlib
 requests
+natsort
+Pillow
