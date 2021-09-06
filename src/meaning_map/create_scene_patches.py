@@ -40,7 +40,7 @@ def search_for_file_path(prompt):
 
 
 def get_info(prompt):
-
+    print(prompt)
     root = tkinter.Tk()
     root.withdraw()  # use to hide tkinter window
     response = messagebox.askyesno("Question", prompt)
@@ -72,16 +72,18 @@ def create_scene_patches():
     # %% 010: Get the image file names
     list_of_files = []
     # path = "../"  # Moves one folder up
-    print(patch_cut)
+    print("Please select the directory containing scene images")
     scene_image_path = search_for_file_path(
         "Please select the directory containing scene images"
     )
-    print(scene_image_path)
-
+    print("You have chosen: " + scene_image_path)
+    print("\n")
+    print("Please select the directory to save the generated patches")
     patch_destination_path = search_for_file_path(
         "Please select the directory to save the generated patches"
     )
-    print(patch_destination_path)
+    print("You have chosen: " + patch_destination_path)
+    print("\n")
     for root, dirs, files in os.walk(scene_image_path):
         for file in files:  # Get all the filenames into this list
             list_of_files.append(os.path.join(root, file))
