@@ -24,7 +24,9 @@ import cv2 as cv
 import numpy as np
 import pickle
 import tkinter
+import re
 from tkinter import filedialog, messagebox
+from tqdm import tqdm
 
 
 # 020: Define functions
@@ -72,12 +74,8 @@ def parse_test_survey(fname, catch_key, scale):
     for row in tmp:
         for i in imgs:
             if i in row:
-                img = (
-                    row.split("RM03_InvMM/master")[1]
-                    .split(".png")[0]
-                    .split("/" + scale + "/")[1]
-                    + ".png"
-                )
+                urls = re.findall(r'src=\\"(.*?)\\"', row)
+                img = os.path.basename(urls[0])
                 qid = row.split('"questionName":"')[1].split('","')[0]
                 existing = [survey["catch"][e] for e in list(survey["catch"].keys())]
                 if img not in existing:
@@ -86,21 +84,13 @@ def parse_test_survey(fname, catch_key, scale):
     # Identify and store test patches
     survey["test"] = {}
     for row in tmp:
+        urls = re.findall(r'src=\\"(.*?)\\"', row)
         # Check whether the current row includes a patch image
-        if (
-            "RM03_InvMM/master/" + scale in row
-        ):  # Change string to a string in the URL for
-            # patch images only (e.g., folder name)
-            for i in row:
-                # Strip image name from the row
-                # Could probably be done better with regular expressions but
-                # I am bad at them
-                img = (
-                    row.split("RM03_InvMM/master")[1]
-                    .split(".png")[0]
-                    .split("/" + scale + "/")[1]
-                    + ".png"
-                )
+        if len(urls) > 0:
+            if scale in urls[0]:  # Change string to a string in the URL for
+                # patch images only (e.g., folder name)
+
+                img = os.path.basename(urls[0])
                 # Get the ID of the survey question (QID) for the current row
                 qid = row.split('"questionName":"')[1].split('","')[0]
                 if qid not in list(survey["catch"].keys()):
@@ -138,7 +128,6 @@ def save_struct(
     # Make a dictionary to store:
     struct = {}
     scene_file = os.path.join(scene_path, scene + ".jpg")
-    print(scene_file)
     scene_image = cv.imread(scene_file, cv.IMREAD_UNCHANGED)
     struct["scene"] = scene_image
     if use_mat:
@@ -151,7 +140,6 @@ def save_struct(
         if not os.path.exists(save_path):
             os.makedirs(save_path, exist_ok=True)
         savemat(os.path.join(save_path, scene + ".mat"), struct)
-        print(" -- Saved " + scene + ".mat!  ")
     else:
         save_path = os.path.join(meaning_path, task, "raw_data_pkl")
         if not os.path.exists(save_path):
@@ -164,7 +152,6 @@ def save_struct(
 
         # close file
         f.close()
-        print(" -- Saved " + scene + ".pkl!  ")
 
 
 # 030: Define relevant file paths
@@ -175,7 +162,6 @@ def save_struct(
 def process_patch_ratings():
 
     relpath = search_for_file_path("Select the qualtrics folder:")
-    print(relpath)
     # Folder name for task, if applicable
     #   Remove or change as needed
     task = "meaning_maps"
@@ -211,7 +197,6 @@ def process_patch_ratings():
         "Select the directory containing the image scenes:"
     )
     meaning_map_path = os.path.dirname(relpath)
-    print(meaning_map_path)
     scenes = [
         s.replace(".jpg", "") for s in os.listdir(scene_image_path) if ".jpg" in s
     ]
@@ -284,7 +269,8 @@ def process_patch_ratings():
                     )
 
     # 070: Save dictionary structure for each scene and scale
-    for scene in list(dat.keys()):
+    list_of_scenes = tqdm(list(dat.keys()))
+    for scene in list_of_scenes:
         scale_rating_array = []
         for scale in list(dat[scene].keys()):
             rating_array = patch_stitch(dat, scene, scale)
@@ -297,3 +283,4 @@ def process_patch_ratings():
             "meaning",
             use_mat=False,
         )
+        list_of_scenes.set_description((f"Processed: {scene}"))
