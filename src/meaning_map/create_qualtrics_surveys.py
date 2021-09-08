@@ -90,10 +90,11 @@ def get_info(prompt):
 
 
 def create_qualtrics_surveys():
-
+    print("Please select the qualtrics folder containing patch_stimuli\n")
     qualtrics_path = search_for_file_path(
         "Please select the qualtrics folder containing patch_stimuli"
     )
+    print("You selected: " + qualtrics_path)
     survey = dict()  # Create an empty survey dict object
 
     # Define path parameters
@@ -116,6 +117,7 @@ def create_qualtrics_surveys():
 
     # %% 010: Define survey parameters
     # 0 = patch only, 1 = patch in context
+    print("Scene context enabled?\n")
     survey["scene_context"] = get_info("Scene context?")
     survey["patch_scale"] = ["fine", "coarse"]  # Patch scales
 
@@ -155,7 +157,8 @@ def create_qualtrics_surveys():
             + "/survey_jobs/rating_instructions/"
             + "PatchOnly_instruction_template.txt"
         )
-
+    print("\n")
+    print("Enter the url where the image patches are hosted:")
     survey["hosting"] = get_url("Enter the url where the image patches are hosted:")
 
     message(
@@ -167,6 +170,8 @@ def create_qualtrics_surveys():
     exists = os.path.exists(survey["instructions_path"])
 
     if not exists:
+        print("\n")
+        print("Please select the 'instructions.txt' file for the survey:")
         files = get_file("Please provide the instructions file for the survey:")
         for f in list(files):
             shutil.copy(f, survey["instructions_path"])
