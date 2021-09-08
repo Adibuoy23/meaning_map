@@ -46,7 +46,7 @@ def get_file(prompt):
     root = tkinter.Tk()
     root.withdraw()  # use to hide tkinter window
     currdir = os.getcwd()
-    file = filedialog.askopenfilename(
+    file = filedialog.askopenfilenames(
         parent=root,
         initialdir=currdir,
         title=prompt,
@@ -99,21 +99,21 @@ def create_qualtrics_surveys():
 
     # Define path parameters
     survey["patch_dir"] = [
-        os.path.abspath(qualtrics_path + "/patch_stimuli/fine/"),
-        os.path.abspath(qualtrics_path + "/patch_stimuli/coarse/"),
+        os.path.abspath(os.path.join(qualtrics_path, "patch_stimuli", "fine")),
+        os.path.abspath(os.path.join(qualtrics_path, "patch_stimuli", "coarse")),
     ]
 
     # Create the survey_out directory if it doesn't exist
-    os.makedirs(qualtrics_path + "/survey_jobs/fine/", exist_ok=True)
-    os.makedirs(qualtrics_path + "/survey_jobs/coarse/", exist_ok=True)
+    os.makedirs(os.path.join(qualtrics_path, "survey_jobs", "fine"), exist_ok=True)
+    os.makedirs(os.path.join(qualtrics_path, "survey_jobs", "coarse"), exist_ok=True)
 
     survey["survey_out"] = [
-        os.path.abspath(qualtrics_path + "/survey_jobs/fine/"),
-        os.path.abspath(qualtrics_path + "/survey_jobs/coarse/"),
+        os.path.abspath(os.path.join(qualtrics_path, "survey_jobs", "fine")),
+        os.path.abspath(os.path.join(qualtrics_path, "survey_jobs", "coarse")),
     ]
 
     # Create the instructions directory if it doesn't exist
-    os.makedirs(qualtrics_path + "/survey_jobs/rating_instructions/", exist_ok=True)
+    os.makedirs(os.path.join(qualtrics_path, "survey_jobs", "rating_instructions"), exist_ok=True)
 
     # %% 010: Define survey parameters
     # 0 = patch only, 1 = patch in context
@@ -131,7 +131,7 @@ def create_qualtrics_surveys():
     # Catch trial parameters are dependent on scene context
     if survey["scene_context"]:
         survey["catch_path"] = os.path.abspath(
-            qualtrics_path + "/patch_stimuli/catch/custom/catch_patches.csv"
+            os.path.join(qualtrics_path, "patch_stimuli", "catch", "custom", "catch_patches.csv")
         )
         if not os.path.exists(survey["catch_path"]):
             message(
@@ -144,18 +144,16 @@ def create_qualtrics_surveys():
                 errno.ENOENT, os.strerror(errno.ENOENT), survey["catch_path"]
             )
         survey["instructions_path"] = os.path.abspath(
-            qualtrics_path
-            + "/survey_jobs/rating_instructions/"
-            + "PatchOnly_instruction_template.txt"
+            os.path.join(qualtrics_path, "survey_jobs",
+                         "rating_instructions", "instruction_template.txt")
         )
     else:
         survey["catch_path"] = os.path.abspath(
-            qualtrics_path + "/patch_stimuli/catch/default/"
+            os.path.join(qualtrics_path, "patch_stimuli", "catch", "default")
         )
         survey["instructions_path"] = os.path.abspath(
-            qualtrics_path
-            + "/survey_jobs/rating_instructions/"
-            + "PatchOnly_instruction_template.txt"
+            os.path.join(qualtrics_path, "survey_jobs",
+                         "rating_instructions", "instruction_template.txt")
         )
     print("\n")
     print("Enter the url where the image patches are hosted:")
@@ -192,7 +190,7 @@ def create_qualtrics_surveys():
         for i, scale in enumerate(survey["patch_scale"]):
             file_names = list(filter(lambda v: match(scale, v), catch_patch_names))
             catch_urls[scale] = [
-                survey["hosting"] + "catch/default/" + name for name in file_names
+                os.path.join(survey["hosting"], "catch", "default", name) for name in file_names
             ]
 
     # %% 030: Define patch urls
@@ -207,7 +205,7 @@ def create_qualtrics_surveys():
         total_ratings[scale] = len(patch_names)
         # For each patch define a unique url
         for name in patch_names:
-            patch_urls[scale].append(survey["hosting"] + scale + name)
+            patch_urls[scale].append(os.path.join(survey["hosting"], scale, name))
         assert len(patch_urls[scale]) == total_ratings[scale]
 
     # %% 040: Randomly sample patches to create survey jobs
@@ -278,7 +276,7 @@ def create_qualtrics_surveys():
                             # Get the current patch name
                             cname, ext = curr.split("/")[-1].split(".")
                             current_page_contexts.extend(
-                                [survey["hosting"] + scale + cname + "_context." + ext]
+                                [os.path.join(survey["hosting"], scale, cname + "_context." + ext)]
                             )
                         # print(current_page_contexts)
                     if page == int(np.round(survey_patches.shape[0]) / 2):
