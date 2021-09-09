@@ -177,6 +177,7 @@ def upload_survey_to_qualtrics():
     relpath = search_for_file_path("Select the qualtrics folder")
     fine_path = os.path.join(relpath, "survey_jobs", "fine")
     fine_files = os.listdir(fine_path)
+    fine_files = [f for f in fine_files if "survey" in f]
     fine_files = natsorted(fine_files, alg=ns.IGNORECASE)
 
     # -- For each file
@@ -204,6 +205,7 @@ def upload_survey_to_qualtrics():
     # -- Get coarse survey files
     coarse_path = os.path.join(relpath, "survey_jobs", "coarse")
     coarse_files = os.listdir(coarse_path)
+    coarse_files = [f for f in coarse_files if "survey" in f]
     coarse_files = natsorted(coarse_files, alg=ns.IGNORECASE)
 
     # -- For each file
