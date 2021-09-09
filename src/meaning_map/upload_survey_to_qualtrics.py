@@ -14,7 +14,7 @@ import_qualtrics_surveys- Uses Qualtrics API to automate the import and activati
 """
 
 
-#%% 010: Import modules and define relative folder path
+# %% 010: Import modules and define relative folder path
 
 
 # Set your project ID and your API token here
@@ -162,16 +162,18 @@ def delete_survey(surveyId, apiToken):
 def upload_survey_to_qualtrics():
     # Preallocate array to store surveyIds for later operations
     all_ids = []
+    print("Enter the project name \n")
     project_ID = get_text(
         "Enter the project name:"
     )  # This will be the name stem for each survey
+    print("Enter the qualtrics API token \n")
     apiToken = get_text("Enter the qualtrics api token: ")
     # %% 030: Import and generate all fine patch jobs in Qualtrics
     # -- Get fine survey files
     # -- (AT EDITS) set the directory to:
     # "\\henderson.cmb.ucdavis.edu\Share\main\tools\NYU_Depth2\data\surveys\set2"
     # os.chdir(r"\\henderson.cmb.ucdavis.edu\Share\main\tools\NYU_Depth2\data\surveys\set2")
-
+    print("Select the qualtrics folder \n")
     relpath = search_for_file_path("Select the qualtrics folder")
     fine_path = os.path.join(relpath, "survey_jobs", "fine")
     fine_files = os.listdir(fine_path)
@@ -183,7 +185,7 @@ def upload_survey_to_qualtrics():
         survey_file = os.path.join(fine_path, x)
         survey_number = re.findall("\d+", x)
         name = (
-            project_ID + "_fine" + survey_number[0].rjust(3, "0")
+            survey_number[0].rjust(3, "0")
         )  # Qualtrics name sort
 
         # -- Call API to import survey
@@ -210,7 +212,7 @@ def upload_survey_to_qualtrics():
         survey_file = os.path.join(coarse_path, x)
         survey_number = re.findall("\d+", x)
         name = (
-            project_ID + "_coarse" + survey_number[0].rjust(3, "0")
+            survey_number[0].rjust(3, "0")
         )  # Qualtrics name sort
         # -- Call API to import survey
         response = import_survey(x, survey_file, name, apiToken)
