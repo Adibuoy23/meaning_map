@@ -5,7 +5,10 @@
 * On Windows / Mac / Ubuntu:
   - Download anaconda / miniconda
   - Download and install git from [https://gitforwindows.org](https://gitforwindows.org)
-  - Open the Anaconda / miniconda shell
+  - If you are using windows:
+    * Open the Anaconda / miniconda shell from the search bar
+  - On ubuntu / MacOS:
+    * Open the terminal
   - create a new environment by running `conda create -n <env_name> python=3.9` in the shell
   - activate the environment by running `activate <env_name>` in the shell
   - Download jupyter notebook by running `conda install jupyter` in the shell
