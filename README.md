@@ -17,6 +17,7 @@
   - launch jupyter notebook by running `jupyter notebook` command in the shell from the navigated repo directory
   - Open the `live_notebooks/meaning_map.ipynb` notebook within live_notebooks folder and follow the instructions there
 
+# Built in features
 This package provides the code for the following:
 * Creating scene patches from natural images
 * Creating qualtrics survey consisting of these scene patches - Participants task is to rate how meaningful these patches are on a scale of [1-7]
