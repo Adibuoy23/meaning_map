@@ -25,3 +25,6 @@ This package provides the code for the following:
 * Uploading the generated surveys to qualtrics API (This requires a valid qualtrics API token in order to upload)
 * Check and process the patch rating obtained surveys - This will consolidate all the ratings that correspond directly to the given image
 * Build meaning maps based on the processed ratings
+
+# To Do
+* Automate the survey extraction from Qualtrics
