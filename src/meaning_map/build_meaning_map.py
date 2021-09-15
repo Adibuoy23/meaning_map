@@ -100,16 +100,21 @@ def build_meaning_map():
         Exception: description
 
     """
+    print("Select the folder where you want to save the meaning maps:\n")
     save_path = search_for_file_path(
         "select the folder where you want to save the heatmaps: "
     )
+    print("You selected: " + save_path + "\n")
     img_save_path = os.path.join(save_path, "img")
     pkl_save_path = os.path.join(save_path, "smooth_pkl")
     os.makedirs(img_save_path, exist_ok=True)
     os.makedirs(pkl_save_path, exist_ok=True)
+    print("Select the meaning mapped raw_data_pkl files to generate heatmaps:")
     meaning_files = get_file(
         "Select the meaning mapped pkl files to generate heatmaps:"
     )
+    print("You selected: \n")
+    print(meaning_files)
     m_files = tqdm(list(meaning_files))
     for mfile in m_files:
         m_files.set_description(f"Building meaning map for {os.path.basename(mfile)}")
@@ -179,4 +184,4 @@ def build_meaning_map():
         with open(os.path.join(pkl_save_path, file_name + ".pkl"), "wb") as f:
 
             # write the python object (dict) to pickle file
-            pickle.dump(average_meaning_map, f)
+            pickle.dump(meaning_map, f)

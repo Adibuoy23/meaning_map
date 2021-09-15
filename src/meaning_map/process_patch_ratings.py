@@ -160,8 +160,9 @@ def save_struct(
 
 
 def process_patch_ratings():
-
+    print("Select the qualtrics folder: \n")
     relpath = search_for_file_path("Select the qualtrics folder:")
+    print("You selected: " + relpath + "\n")
     # Folder name for task, if applicable
     #   Remove or change as needed
     task = "meaning_maps"
@@ -179,23 +180,27 @@ def process_patch_ratings():
     # Build catch key (need to parse surveys)
     catch_key = {}
     catch_key["values"] = [1, 2]
+    try:
+        catch_tmp = open(os.path.join(catch_in, os.listdir(catch_in)[0]), "r").readlines()
+        catch_tmp = catch_tmp[1:]
 
-    catch_tmp = open(os.path.join(catch_in, os.listdir(catch_in)[0]), "r").readlines()
-    catch_tmp = catch_tmp[1:]
-
-    for row in catch_tmp:
-        try:
-            catch_key[row.split(",")[3]].append(row.split(",")[0])
-        except KeyError:
-            catch_key[row.split(",")[3]] = []
-            catch_key[row.split(",")[3]].append(row.split(",")[0])
+        for row in catch_tmp:
+            try:
+                catch_key[row.split(",")[3]].append(row.split(",")[0])
+            except KeyError:
+                catch_key[row.split(",")[3]] = []
+                catch_key[row.split(",")[3]].append(row.split(",")[0])
+    except IndexError:
+        raise Warning("No catch files found! I will assume that there were no catch patches used")
 
     # 050: Combine data across surveys into a data dictionary
 
     # Populate list of scene images
+    print("Select the directory containing image scenes:\n")
     scene_image_path = search_for_file_path(
         "Select the directory containing the image scenes:"
     )
+    print("You chose: " + scene_image_path + "\n")
     meaning_map_path = os.path.dirname(relpath)
     scenes = [
         s.replace(".jpg", "") for s in os.listdir(scene_image_path) if ".jpg" in s

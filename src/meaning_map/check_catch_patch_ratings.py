@@ -94,10 +94,14 @@ def check_catch_patch_ratings():
     # %% 020: Define input parameters
     scales = ["coarse", "fine"]
     # Get the qualtrics path
+    print("Select the qualtrics folder:\n")
     relpath = search_for_file_path("Select the qualtrics folder:")
+    print("You selected: " + relpath+"\n")
     # Directory containing .csv with catch patches
     # Catch patch condition
+    print("Do the surveys have custom catch patches?\n")
     custom_catch = get_info("Do the surveys have custom catch patches?")
+    print("You said: " + custom_catch + "\n")
 
     if custom_catch:
         catch_condition = "custom"
@@ -130,7 +134,8 @@ def check_catch_patch_ratings():
             scale = scales[0]
         elif scales[1] in file:
             scale = scales[1]
-        num = file.split(scale)[1].split(".txt")[0]  # Store surve number
+        num = re.findall(r'\d+', file)  # Store survey number
+        print(num)
         parsed_survey = parse_survey(os.path.join(surveys_in, file), catch_key, scale)
         catch_IDs = get_catch(catch_key, scale, parsed_survey)
         try:
@@ -147,9 +152,8 @@ def check_catch_patch_ratings():
     for scale in scales:
         for d in os.listdir(os.path.join(data_in, scale)):  # For each data file
             # Strip information from the file name
-            scale = d.split("_")[2]  # Survey scale + number
-            num = scale[-3:]  # Survey number
-            scale = scale[0:-3]  # Survey scale (coarse or fine)
+            scale_num = re.findall(scale+"[0-9]{3}", d)  # Survey scale + number
+            num = scale_num[-3:]  # Survey number
 
             data = open(
                 os.path.join(data_in, scale, d), "r"
