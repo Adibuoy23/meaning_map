@@ -4,10 +4,11 @@
 # Installation
 * On Windows / Mac / Ubuntu:
   - Download anaconda / miniconda
-  - Download and install git from [https://gitforwindows.org](https://gitforwindows.org)
   - If you are using windows:
     * Open the Anaconda / miniconda shell from the search bar
+    * Download and install git from [https://gitforwindows.org](https://gitforwindows.org)
   - On ubuntu / MacOS:
+    * MacOs / Ubuntu should most likely have git installed. If not, you could download from [https://git-scm.com/downloads](https://git-scm.com/downloads)
     * Open the terminal
   - create a new environment by running `conda create -n <env_name> python=3.9` in the shell
   - activate the environment by running `activate <env_name>` in the shell
